@@ -17,7 +17,7 @@ services:
     run_command: echo "Starting static server..."
     environment_variables:
       - key: FLUTTER_VERSION
-        value: "3.16.5"  # Or whichever version you're using
+        value: "3.27.4"  # Or whichever version you're using
     static_sites:
       - environment_slug: html
         name: web-app
