@@ -7,6 +7,46 @@ import 'package:portfolio/res/app_colors.dart';
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
+  // Responsive helpers
+  double _getHeaderFontSize(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 360) return 24;
+    if (screenWidth < 600) return 28;
+    if (screenWidth < 900) return 32;
+    return 36;
+  }
+
+  double _getTitleFontSize(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 360) return 16;
+    if (screenWidth < 600) return 18;
+    return 20;
+  }
+
+  double _getCardPadding(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 360) return 16;
+    if (screenWidth < 600) return 20;
+    return 24;
+  }
+
+  double _getCardWidth(BuildContext context, BoxConstraints constraints) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 600) {
+      return constraints.maxWidth; // Full width on mobile
+    } else if (screenWidth < 900) {
+      return (constraints.maxWidth - 24) / 2; // Two cards per row on tablet
+    }
+    return (constraints.maxWidth - 48) / 3; // Three cards per row on desktop
+  }
+
+  double _getCardHeight(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    if (screenWidth < 360) return 280;
+    if (screenWidth < 600) return 300;
+    return 320;
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<SkillCategory> skillCategories = [
@@ -56,28 +96,35 @@ class SkillsSection extends StatelessWidget {
 
     return Column(
       children: [
-        Text(
-          '< SKILLS />',
-          style: GoogleFonts.orbitron(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width < 600 ? 16 : 0,
           ),
-        ).animate()
-            .fadeIn(duration: 800.ms)
-            .slideX(begin: -0.3, end: 0),
-        const SizedBox(height: 48),
+          child: Text(
+            '< SKILLS />',
+            style: GoogleFonts.orbitron(
+              fontSize: _getHeaderFontSize(context),
+              fontWeight: FontWeight.bold,
+            ),
+          ).animate()
+              .fadeIn(duration: 800.ms)
+              .slideX(begin: -0.3, end: 0),
+        ),
+        SizedBox(height: MediaQuery.of(context).size.width < 600 ? 32 : 48),
         LayoutBuilder(
           builder: (context, constraints) {
-            final cardWidth = (constraints.maxWidth - 48) / 3;
+            final cardWidth = _getCardWidth(context, constraints)
+                .clamp(300.0, 400.0);
             return Wrap(
-              spacing: 24,
-              runSpacing: 24,
+              spacing: MediaQuery.of(context).size.width < 600 ? 16 : 24,
+              runSpacing: MediaQuery.of(context).size.width < 600 ? 16 : 24,
               children: skillCategories
                   .map((category) => _buildSkillCard(
+                context: context,
                 title: category.title,
                 skills: category.skills,
                 icon: category.icon,
-                width: cardWidth.clamp(300, 400),
+                width: cardWidth,
               ))
                   .toList(),
             ).animate()
@@ -90,17 +137,20 @@ class SkillsSection extends StatelessWidget {
   }
 
   Widget _buildSkillCard({
+    required BuildContext context,
     required String title,
     required List<String> skills,
     required IconData icon,
     required double width,
   }) {
+    final bool isMobile = MediaQuery.of(context).size.width < 600;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Container(
         width: width,
-        height: 320,
-        padding: const EdgeInsets.all(24),
+        height: _getCardHeight(context),
+        padding: EdgeInsets.all(_getCardPadding(context)),
         decoration: BoxDecoration(
           color: AppColors.cardDark,
           borderRadius: BorderRadius.circular(16),
@@ -112,19 +162,23 @@ class SkillsSection extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.all(isMobile ? 6 : 8),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(icon, color: AppColors.primary, size: 24),
+                  child: Icon(
+                    icon,
+                    color: AppColors.primary,
+                    size: isMobile ? 20 : 24,
+                  ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: isMobile ? 8 : 12),
                 Expanded(
                   child: Text(
                     title,
                     style: GoogleFonts.spaceGrotesk(
-                      fontSize: 20,
+                      fontSize: _getTitleFontSize(context),
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -132,15 +186,15 @@ class SkillsSection extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: isMobile ? 16 : 24),
             Expanded(
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: skills.map((skill) => Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 10 : 12,
+                    vertical: isMobile ? 4 : 6,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
@@ -151,10 +205,10 @@ class SkillsSection extends StatelessWidget {
                   ),
                   child: Text(
                     skill,
-                    style: const TextStyle(
-                      color: Colors.white,  // Changed to white
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,  // Slightly lighter weight for better readability
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: isMobile ? 12 : 14,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 )).toList(),

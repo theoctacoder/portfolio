@@ -62,6 +62,7 @@ class PersonalProjectsSection extends StatelessWidget {
             fontSize: 36,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ).animate().fadeIn(duration: 800.ms).slideX(begin: -0.3, end: 0),
         const SizedBox(height: 48),
         Wrap(
