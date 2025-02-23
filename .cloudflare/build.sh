@@ -15,5 +15,11 @@ fi
 flutter config --enable-web
 flutter doctor
 
+APP_VERSION=$(grep -m 1 '^version:' pubspec.yaml | awk '{print $2}' | cut -d'+' -f1)
+
+INDEX_HTML="web/index.html"
+
+sed -i "" "s/<script src=\"flutter_bootstrap.js\"/<script src=\"flutter_bootstrap.js?v=${APP_VERSION}\"/" "$INDEX_HTML"
+
 # Build the project
 flutter build web --release
