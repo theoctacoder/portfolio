@@ -1,15 +1,16 @@
 alerts:
   - rule: DEPLOYMENT_FAILED
   - rule: DOMAIN_FAILED
+
 name: portfolio
 region: blr
+
 static_sites:
-  - environment_slug: flutter
+  - name: portfolio
     github:
       branch: production
       deploy_on_push: true
       repo: theoctacoder/portfolio
-    name: portfolio-web
     build_command: flutter build web --release
     output_dir: build/web
     source_dir: /
