@@ -1,38 +1,372 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<title>Bhavesh Auodichya</title>-->
+<!--<head>-->
+<!--    &lt;!&ndash;-->
+<!--      If you are serving your web app in a path other than the root, change the-->
+<!--      href value below to reflect the base path you are serving from.-->
+
+<!--      The path provided below has to start and end with a slash "/" in order for-->
+<!--      it to work correctly.-->
+
+<!--      For more details:-->
+<!--      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base-->
+
+<!--      This is a placeholder for base href that will be replaced by the value of-->
+<!--      the `&#45;&#45;base-href` argument provided to `flutter build`.-->
+<!--    &ndash;&gt;-->
+<!--    <base href="$FLUTTER_BASE_HREF">-->
+
+<!--    <meta charset="UTF-8">-->
+<!--    <meta content="IE=Edge" http-equiv="X-UA-Compatible">-->
+<!--    <meta name="description"-->
+<!--          content="Portfolio of Bhavesh Auodichya - Mobile Development • AI Engineering • Full Stack">-->
+
+<!--    &lt;!&ndash; iOS meta tags & icons &ndash;&gt;-->
+<!--    <meta name="mobile-web-app-capable" content="yes">-->
+<!--    <meta name="apple-mobile-web-app-status-bar-style" content="black">-->
+
+<!--    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>-->
+<!--    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>-->
+<!--    <link rel="shortcut icon" href="/favicon.ico"/>-->
+<!--    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>-->
+<!--    <meta name="apple-mobile-web-app-title" content="Bhavesh A"/>-->
+
+<!--    <title>portfolio</title>-->
+<!--    <link rel="manifest" href="manifest.json">-->
+<!--</head>-->
+<!--&lt;!&ndash;<body style="background-color: #1a1a1a;">&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="progress-bar">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="progress-fill"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div id="loading">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;          inset: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;          overflow: hidden;&ndash;&gt;-->
+<!--&lt;!&ndash;          margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;          padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;          position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      .progress-bar {&ndash;&gt;-->
+<!--&lt;!&ndash;        position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;        top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;        height: 3px;&ndash;&gt;-->
+<!--&lt;!&ndash;        background-color: rgba(255, 255, 255, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;        z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;      .progress-fill {&ndash;&gt;-->
+<!--&lt;!&ndash;        height: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;        width: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        background-color: #5E17EB; /* Your theme color */&ndash;&gt;-->
+<!--&lt;!&ndash;        animation: loading 2s ease-in-out infinite;&ndash;&gt;-->
+<!--&lt;!&ndash;      }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        #loading {&ndash;&gt;-->
+<!--&lt;!&ndash;          align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;          display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;          height: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;          justify-content: center;&ndash;&gt;-->
+<!--&lt;!&ndash;          width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        #loading img {&ndash;&gt;-->
+<!--&lt;!&ndash;          animation: 1s ease-in-out 0s infinite pulse;&ndash;&gt;-->
+<!--&lt;!&ndash;          width: 96px;&ndash;&gt;-->
+<!--&lt;!&ndash;          height: 96px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        @keyframes pulse {&ndash;&gt;-->
+<!--&lt;!&ndash;          0% {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: scale(1);&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          50% {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: scale(1.1);&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;          100% {&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: scale(1);&ndash;&gt;-->
+<!--&lt;!&ndash;          }&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; Your logo or initials here &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <img src="/favicon-96x96.png" alt="Loading indicator"/>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="flutter_bootstrap.js" async></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    window.addEventListener('load', function() {&ndash;&gt;-->
+<!--&lt;!&ndash;      var loading = document.querySelector('#loading');&ndash;&gt;-->
+<!--&lt;!&ndash;      var progressBar = document.querySelector('.progress-bar');&ndash;&gt;-->
+
+<!--&lt;!&ndash;      _flutter.loader.load({&ndash;&gt;-->
+<!--&lt;!&ndash;        serviceWorker: {&ndash;&gt;-->
+<!--&lt;!&ndash;          serviceWorkerVersion: serviceWorkerVersion,&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;      }).then(function(engineInitializer) {&ndash;&gt;-->
+<!--&lt;!&ndash;        return engineInitializer.initializeEngine();&ndash;&gt;-->
+<!--&lt;!&ndash;      }).then(function(appRunner) {&ndash;&gt;-->
+<!--&lt;!&ndash;        loading.remove();&ndash;&gt;-->
+<!--&lt;!&ndash;        progressBar.remove();&ndash;&gt;-->
+
+<!--&lt;!&ndash;        return appRunner.runApp();&ndash;&gt;-->
+<!--&lt;!&ndash;      });&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+
+<!--<body style="background-color: #1a1a1a;">-->
+<!--<div class="progress-bar">-->
+<!--    <div class="progress-fill"></div>-->
+<!--</div>-->
+<!--<div id="loading">-->
+<!--    <style>-->
+<!--        body {-->
+<!--          inset: 0;-->
+<!--          overflow: hidden;-->
+<!--          margin: 0;-->
+<!--          padding: 0;-->
+<!--          position: fixed;-->
+<!--        }-->
+
+<!--      .progress-bar {-->
+<!--        position: fixed;-->
+<!--        top: 0;-->
+<!--        left: 0;-->
+<!--        width: 100%;-->
+<!--        height: 3px;-->
+<!--        background-color: rgba(255, 255, 255, 0.1);-->
+<!--        z-index: 1000;-->
+<!--        overflow: hidden;-->
+<!--      }-->
+
+<!--      .progress-fill {-->
+<!--        height: 100%;-->
+<!--        width: 0;-->
+<!--        background-color: #5E17EB;-->
+<!--        animation: loading 2s ease-in-out infinite;-->
+<!--        transition: width 0.3s ease-out;-->
+<!--      }-->
+
+
+<!--        #loading {-->
+<!--          align-items: center;-->
+<!--          display: flex;-->
+<!--          height: 100%;-->
+<!--          justify-content: center;-->
+<!--          width: 100%;-->
+<!--        }-->
+
+<!--        .icon-container {-->
+<!--          background-color: rgba(94, 23, 235, 0.1);-->
+<!--          border-radius: 24px;-->
+<!--          padding: 20px;-->
+<!--          border: 2px solid rgba(94, 23, 235, 0.2);-->
+<!--        }-->
+
+<!--        #loading img {-->
+<!--          animation: 1s ease-in-out 0s infinite pulse;-->
+<!--          width: 96px;-->
+<!--          height: 96px;-->
+<!--          border-radius: 16px;-->
+<!--        }-->
+
+<!--        @keyframes pulse {-->
+<!--          0% { transform: scale(1); }-->
+<!--          50% { transform: scale(1.1); }-->
+<!--          100% { transform: scale(1); }-->
+<!--        }-->
+
+<!--        @keyframes loading {-->
+<!--          0% { width: 0; }-->
+<!--          50% { width: 70%; }-->
+<!--          100% { width: 100%; }-->
+<!--        }-->
+<!--    </style>-->
+<!--    &lt;!&ndash; Wrapped in a container div &ndash;&gt;-->
+<!--    <div class="icon-container">-->
+<!--        <img src="/favicon-96x96.png" alt="Loading indicator"/>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script src="flutter_bootstrap.js" async></script>-->
+<!--<script>-->
+
+<!--    window.addEventListener('load', function () {-->
+<!--        console.log("Window load event triggered");-->
+
+<!--        var loading = document.getElementById('loading');-->
+<!--        var progressBar = document.querySelector('.progress-bar');-->
+<!--        var progressFill = document.querySelector('.progress-fill');-->
+
+
+<!--_flutter.loader.load({-->
+<!--  onEntrypointLoaded: async function(engineInitializer) {-->
+<!--    const appRunner = await engineInitializer.initializeEngine();-->
+<!--        loading.remove();-->
+<!--        progressBar.remove();-->
+<!--        progressFill.remove();-->
+<!--    await appRunner.runApp();-->
+<!--  }-->
+<!--});-->
+<!--</script>-->
+<!--</body>-->
+
+<!--</html>-->
+
 <!DOCTYPE html>
 <html>
+<title>Bhavesh Auodichya</title>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A personal portfolio">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="portfolio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>portfolio</title>
-  <link rel="manifest" href="manifest.json">
+    <base href="$FLUTTER_BASE_HREF">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description"
+          content="Portfolio of Bhavesh Auodichya - Mobile Development • AI Engineering • Full Stack">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+    <meta name="apple-mobile-web-app-title" content="Bhavesh A"/>
+    <title>portfolio</title>
+    <link rel="manifest" href="manifest.json">
 </head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+<body style="background-color: #1a1a1a;">
+<div id="progress-container">
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+    <div id="loading">
+        <style>
+            body {
+              inset: 0;
+              overflow: hidden;
+              margin: 0;
+              padding: 0;
+              position: fixed;
+            }
+
+          .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            overflow: hidden;
+          }
+
+          .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #5E17EB;
+            animation: loading 2s ease-in-out infinite;
+            transition: width 0.3s ease-out;
+          }
+
+          #loading {
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100vw;
+              height: 100vh;
+              z-index: 999;
+          }
+
+          .icon-container {
+              background-color: rgba(94, 23, 235, 0.1);
+              border-radius: 24px;
+              padding: 20px;
+              border: 2px solid rgba(94, 23, 235, 0.2);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+
+          #loading img {
+              animation: 1s ease-in-out 0s infinite pulse;
+              width: 96px;
+              height: 96px;
+              border-radius: 16px;
+              display: block;
+          }
+
+          @keyframes pulse {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.1); }
+              100% { transform: scale(1); }
+          }
+
+          @keyframes loading {
+              0% { width: 0; }
+              50% { width: 70%; }
+              100% { width: 100%; }
+          }
+        </style>
+        <div class="icon-container">
+            <img src="/favicon-96x96.png" alt="Loading indicator"/>
+        </div>
+    </div>
+</div>
+<script src="flutter_bootstrap.js" async></script>
+<script>
+    // Function to remove loading elements and restore body styles
+    function cleanupLoadingElements() {
+        const progressContainer = document.getElementById('progress-container');
+        if (progressContainer) {
+            progressContainer.style.display = 'none';
+            progressContainer.remove();
+        }
+        document.body.style.position = 'static';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.addEventListener('load', function () {
+        console.log("Window load event triggered");
+
+        // Configure Flutter loader
+        _flutter.loader.load({
+            onEntrypointLoaded: async function(engineInitializer) {
+                try {
+                    // Initialize the Flutter engine
+                    const appRunner = await engineInitializer.initializeEngine();
+
+                    // Remove loading elements
+                    cleanupLoadingElements();
+
+                    // Run the Flutter app
+                    await appRunner.runApp();
+
+                    // Double-check cleanup after app is running
+                    setTimeout(cleanupLoadingElements, 1200);
+                } catch (error) {
+                    console.error('Error during Flutter initialization:', error);
+                    cleanupLoadingElements(); // Cleanup even if there's an error
+                }
+            }
+        });
+
+        // Fallback cleanup after 10 seconds in case Flutter fails to load
+        setTimeout(cleanupLoadingElements, 1200);
+    });
+
+    // Additional cleanup trigger on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            if (document.getElementById('progress-container')) {
+                cleanupLoadingElements();
+            }
+        }, 5000);
+    });
+</script>
 </body>
 </html>
