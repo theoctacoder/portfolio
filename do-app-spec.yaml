@@ -1,25 +1,21 @@
-# do-app-spec.yaml
 alerts:
   - rule: DEPLOYMENT_FAILED
   - rule: DOMAIN_FAILED
-name: your-portfolio
-region: nyc
-services:
-  - build_command: flutter build web --release
-    environment_slug: flutter
+features:
+  - buildpack-stack=ubuntu-22
+name: portfolio
+region: blr
+static_sites:
+  - environment_slug: flutter
     github:
       branch: production
       deploy_on_push: true
-      repo: https://github.com/theoctacoder/portfolio.git
-    name: portfolio
-    source_dir: /
+      repo: theoctacoder/portfolio
+    name: portfolio-web
+    build_command: flutter build web --release
     output_dir: build/web
-    run_command: echo "Starting static server..."
+    source_dir: /
+    catchall_document: index.html
     environment_variables:
       - key: FLUTTER_VERSION
-        value: "3.27.4"  # Or whichever version you're using
-    static_sites:
-      - environment_slug: html
-        name: web-app
-        source_dir: build/web
-        catchall_document: index.html
+        value: "3.27.4"
