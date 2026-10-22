@@ -1,23 +1,24 @@
-import 'package:flutter/foundation.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:portfolio/bloc/portfolio_bloc.dart';
-import 'package:portfolio/bloc/portfolio_event.dart';
+import 'package:portfolio/data/portfolio_data.dart';
 import 'package:portfolio/res/app_colors.dart';
-import 'package:portfolio/widgets/nav_item.dart';
-import 'package:portfolio/widgets/personal_project_section.dart';
-import 'package:portfolio/widgets/resume_section.dart';
+import 'package:portfolio/res/app_text.dart';
+import 'package:portfolio/res/responsive.dart';
+import 'package:portfolio/widgets/builds_section.dart';
+import 'package:portfolio/widgets/common.dart';
+import 'package:portfolio/widgets/contact_section.dart';
+import 'package:portfolio/widgets/dbu_section.dart';
+import 'package:portfolio/widgets/experience_section.dart';
+import 'package:portfolio/widgets/hero_section.dart';
+import 'package:portfolio/widgets/stack_section.dart';
 
-import '../widgets/contact_section.dart';
-import '../widgets/experince_section.dart';
-import '../widgets/hero_section.dart';
-import '../widgets/project_section.dart';
-import '../widgets/skills_section.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+class _NavTarget {
+  final String label;
+  final GlobalKey key;
+  _NavTarget(this.label) : key = GlobalKey();
+}
 
-// Add these controllers at the top of HomePage class
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -26,150 +27,234 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final ScrollController _scrollController = ScrollController();
-  final GlobalKey skillsKey = GlobalKey();
-  final GlobalKey experienceKey = GlobalKey();
-  final GlobalKey projectsKey = GlobalKey();
-  final GlobalKey contactKey = GlobalKey();
-  final GlobalKey resumeKey = GlobalKey();
-  final GlobalKey personalProjectsKey = GlobalKey();
+  final _scroll = ScrollController();
+  final _sections = [
+    _NavTarget('dbu'),
+    _NavTarget('experience'),
+    _NavTarget('builds'),
+    _NavTarget('stack'),
+    _NavTarget('contact'),
+  ];
 
-  String _currentSection = '';
-  bool _showScrollToTop = false;
+  int _active = -1;
+  double _progress = 0;
+  bool _scrolled = false;
+  bool _menuOpen = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
-  }
-
-  void _scrollListener() {
-    // Show/hide scroll to top button
-    setState(() {
-      _showScrollToTop = _scrollController.offset > 700;
-
-      // Clear selection when at top
-      if (_scrollController.offset < 100) {
-        _currentSection = '';
-      }
-    });
-  }
-
-  void _scrollToSection(GlobalKey key) {
-    final context = key.currentContext;
-    if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void _scrollToTop() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeInOut,
-    ).then((_) {
-      // Ensure selection is cleared after scroll animation
-      setState(() {
-        _currentSection = '';
-      });
-    });
+    _scroll.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
+  void _onScroll() {
+    final pos = _scroll.position;
+    final progress = pos.maxScrollExtent > 0
+        ? (pos.pixels / pos.maxScrollExtent).clamp(0.0, 1.0)
+        : 0.0;
+
+    // Active section = last one whose top has passed a third of the viewport.
+    final probe = MediaQuery.sizeOf(context).height * 0.33;
+    var active = -1;
+    for (var i = 0; i < _sections.length; i++) {
+      final box =
+          _sections[i].key.currentContext?.findRenderObject() as RenderBox?;
+      if (box == null || !box.attached) continue;
+      if (box.localToGlobal(Offset.zero).dy <= probe) active = i;
+    }
+
+    if (progress != _progress ||
+        active != _active ||
+        (pos.pixels > 20) != _scrolled) {
+      setState(() {
+        _progress = progress;
+        _active = active;
+        _scrolled = pos.pixels > 20;
+      });
+    }
+  }
+
+  void _goTo(int index) {
+    setState(() => _menuOpen = false);
+    final ctx = _sections[index].key.currentContext;
+    if (ctx == null) return;
+    Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+      alignmentPolicy: ScrollPositionAlignmentPolicy.explicit,
+    );
+  }
+
+  void _toTop() {
+    setState(() => _menuOpen = false);
+    _scroll.animateTo(
+      0,
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  void _openResume() =>
+      openUrl(Uri.base.resolve('assets/${Links.resumeAsset}').toString());
+
   @override
   Widget build(BuildContext context) {
+    final mobile = Responsive.isMobile(context);
+    final gap = SizedBox(height: mobile ? 96 : 150);
+
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: AppColors.darkBg.withOpacity(0.95),
-        elevation: 0,
-        toolbarHeight: 70,
-        // Increased height to accommodate content
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(2),
-          child: ScrollProgressIndicator(scrollController: _scrollController),
-        ),
-        title: Row(
-          children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: _scrollToTop,
-                child: Text(
-                  'BA',
-                  style: GoogleFonts.orbitron(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary),
+      backgroundColor: AppColors.bg,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _scroll,
+            child: Column(
+              children: [
+                HeroSection(onViewWork: () => _goTo(0), onResume: _openResume),
+                SizedBox(height: mobile ? 48 : 80),
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: DbuSection(key: _sections[0].key),
                 ),
+                gap,
+                ExperienceSection(key: _sections[1].key),
+                SizedBox(height: mobile ? 56 : 100),
+                BuildsSection(key: _sections[2].key),
+                gap,
+                StackSection(key: _sections[3].key),
+                gap,
+                ContactSection(key: _sections[4].key, onResume: _openResume),
+              ],
+            ),
+          ),
+          Positioned(top: 0, left: 0, right: 0, child: _navBar(mobile)),
+        ],
+      ),
+    );
+  }
+
+  Widget _navBar(bool mobile) {
+    final compact = Responsive.width(context) < 960;
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: _scrolled || _menuOpen ? 14 : 0,
+          sigmaY: _scrolled || _menuOpen ? 14 : 0,
+        ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color: _scrolled || _menuOpen
+                ? AppColors.bg.withValues(alpha: 0.78)
+                : Colors.transparent,
+            border: Border(
+              bottom: BorderSide(
+                color: _scrolled ? AppColors.border : Colors.transparent,
               ),
             ),
-            const Spacer(),
-            _buildNavItems(),
-          ],
-        ),
-      ),
-      floatingActionButton: AnimatedOpacity(
-        opacity: _showScrollToTop ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 200),
-        child: FloatingActionButton(
-          onPressed: _scrollToTop,
-          backgroundColor: AppColors.primary,
-          child: const Icon(Icons.arrow_upward),
-        )
-            .animate()
-            .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1)),
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 48.0),
+          ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 32), // Add spacing after fixed AppBar
-              const HeroSection(),
-              const SizedBox(height: 100),
-              _buildSectionWithDetector(
-                'skills',
-                SkillsSection(key: skillsKey),
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: Responsive.maxContentWidth,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.gutter(context),
+                      vertical: mobile ? 14 : 18,
+                    ),
+                    child: Row(
+                      children: [
+                        _logo(),
+                        const Spacer(),
+                        if (compact)
+                          IconButton(
+                            onPressed: () =>
+                                setState(() => _menuOpen = !_menuOpen),
+                            icon: Icon(
+                              _menuOpen ? Icons.close : Icons.menu_rounded,
+                              color: AppColors.text,
+                            ),
+                          )
+                        else
+                          for (var i = 0; i < _sections.length; i++)
+                            _NavLink(
+                              index: i,
+                              label: _sections[i].label,
+                              active: _active == i,
+                              onTap: () => _goTo(i),
+                            ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 100),
-              _buildSectionWithDetector(
-                'experience',
-                ExperienceSection(key: experienceKey),
+              if (compact)
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  child: _menuOpen
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          child: Column(
+                            children: [
+                              for (var i = 0; i < _sections.length; i++)
+                                InkWell(
+                                  onTap: () => _goTo(i),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '0${i + 1}',
+                                          style: AppText.mono(
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 14),
+                                        Text(
+                                          _sections[i].label,
+                                          style: AppText.mono(
+                                            size: 16,
+                                            color: AppColors.text,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(width: double.infinity),
+                ),
+              // Scroll progress.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FractionallySizedBox(
+                  widthFactor: _progress,
+                  child: Container(
+                    height: 2,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [AppColors.primary, AppColors.cyan],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 100),
-              _buildSectionWithDetector(
-                'projects',
-                ProjectsSection(key: projectsKey),
-              ),
-              const SizedBox(height: 100),
-
-              _buildSectionWithDetector(
-                'personal',
-                PersonalProjectsSection(key: personalProjectsKey),
-              ),
-              const SizedBox(height: 100),
-              _buildSectionWithDetector(
-                'resume',
-                ResumeSection(key: resumeKey),
-              ),
-              const SizedBox(height: 100),
-              _buildSectionWithDetector(
-                'contact',
-                ContactSection(key: contactKey),
-              ),
-              const SizedBox(height: 48),
             ],
           ),
         ),
@@ -177,126 +262,76 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNavItems() {
-    return Row(
-      children: [
-        _buildNavItem('Skills', skillsKey),
-        _buildNavItem('Experience', experienceKey),
-        _buildNavItem('Projects', projectsKey),
-        _buildNavItem('Personal Projects', personalProjectsKey),
-        _buildNavItem('Resume', resumeKey),
-        _buildNavItem('Contact', contactKey),
-      ],
-    );
-  }
-
-  Widget _buildNavItem(String title, GlobalKey key) {
-    final isSelected = _currentSection.toLowerCase() == title.toLowerCase();
-    return NavItem(
-      title: title,
-      isSelected: isSelected,
-      onTap: () {
-        if (title.toLowerCase() == _currentSection.toLowerCase()) {
-          _scrollToTop();
-        } else {
-          _scrollToSection(key);
-        }
-      },
-    );
-
-  }
-
-  Widget _buildSectionWithDetector(String sectionId, Widget child) {
-    return VisibilityDetector(
-      key: Key(sectionId),
-      onVisibilityChanged: (visibilityInfo) {
-        if (visibilityInfo.visibleFraction > 0.3) {
-          if (_scrollController.offset > 100) {
-            setState(() {
-              _currentSection = sectionId;
-            });
-          }
-        }
-      },
-      child: child,
+  Widget _logo() {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: _toTop,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const LogoMark(size: 30),
+            const SizedBox(width: 10),
+            Text(
+              '~/bhavesh',
+              style: AppText.mono(size: 13, color: AppColors.text),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-// Add Progress Indicator
-class ScrollProgressIndicator extends StatelessWidget {
-  final ScrollController scrollController;
-
-  const ScrollProgressIndicator({
-    super.key,
-    required this.scrollController,
+class _NavLink extends StatefulWidget {
+  final int index;
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+  const _NavLink({
+    required this.index,
+    required this.label,
+    required this.active,
+    required this.onTap,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<ScrollPosition?>(
-      valueListenable: _ScrollPositionListenable(scrollController),
-      builder: (context, position, child) {
-        if (position == null) {
-          return const LinearProgressIndicator(
-            value: 0,
-            backgroundColor: Colors.transparent,
-            minHeight: 2,
-          );
-        }
-
-        final double progress =
-            position.hasContentDimensions && position.maxScrollExtent > 0
-                ? (position.pixels / position.maxScrollExtent).clamp(0.0, 1.0)
-                : 0.0;
-
-        return LinearProgressIndicator(
-          value: progress,
-          backgroundColor: Colors.transparent,
-          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-          minHeight: 2,
-        );
-      },
-    );
-  }
+  State<_NavLink> createState() => _NavLinkState();
 }
 
-// Custom ValueListenable for scroll position
-class _ScrollPositionListenable extends ValueListenable<ScrollPosition?> {
-  final ScrollController controller;
-  final List<VoidCallback> _listeners = [];
-  ScrollPosition? _position;
-
-  _ScrollPositionListenable(this.controller) {
-    controller.addListener(_handleScroll);
-  }
-
-  void _handleScroll() {
-    final ScrollPosition? newPosition =
-        controller.hasClients ? controller.position : null;
-    if (newPosition != _position) {
-      _position = newPosition;
-      for (final listener in _listeners) {
-        listener();
-      }
-    }
-  }
+class _NavLinkState extends State<_NavLink> {
+  bool _hover = false;
 
   @override
-  void addListener(VoidCallback listener) {
-    _listeners.add(listener);
-  }
-
-  @override
-  void removeListener(VoidCallback listener) {
-    _listeners.remove(listener);
-  }
-
-  @override
-  ScrollPosition? get value => _position;
-
-  void dispose() {
-    controller.removeListener(_handleScroll);
-    _listeners.clear();
+  Widget build(BuildContext context) {
+    final lit = widget.active || _hover;
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '0${widget.index + 1}. ',
+                  style: AppText.mono(size: 12, color: AppColors.primary),
+                ),
+                TextSpan(
+                  text: widget.label,
+                  style: AppText.mono(
+                    size: 13,
+                    color: lit ? AppColors.text : AppColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -1,38 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A personal portfolio">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bhavesh Auodichya — Mobile Frontend Lead</title>
+  <meta name="description"
+        content="Bhavesh Auodichya — Mobile Frontend Lead. Android, banking hardware and on-device AI. Built India's Digital Banking Unit, live at Axis Bank and slice.">
+  <meta name="theme-color" content="#06080C">
 
-  <!-- iOS meta tags & icons -->
+  <meta property="og:title" content="Bhavesh Auodichya — Mobile Frontend Lead">
+  <meta property="og:description"
+        content="Android systems that talk to banking hardware, and AI that runs on the device.">
+  <meta property="og:image" content="/web-app-manifest-512x512.png">
+
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="portfolio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>portfolio</title>
+  <meta name="apple-mobile-web-app-title" content="Bhavesh A">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body {
+      margin: 0;
+      background: #06080C;
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(61, 220, 132, 0.10), transparent 45%),
+        linear-gradient(rgba(28, 36, 48, 0.55) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(90deg, rgba(28, 36, 48, 0.55) 1px, transparent 1px) 0 0 / 48px 48px,
+        #06080C;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      transition: opacity 0.45s ease;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .mark {
+      width: 112px;
+      height: 112px;
+      filter: drop-shadow(0 0 24px rgba(61, 220, 132, 0.25));
+    }
+
+    .mark .frame {
+      stroke-dasharray: 240;
+      stroke-dashoffset: 240;
+      animation: draw 0.9s ease-out forwards;
+    }
+
+    .mark .glyph {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      animation: draw 0.8s 0.35s ease-out forwards;
+    }
+
+    .mark .cursor {
+      opacity: 0;
+      animation: blink 1s 1.1s steps(1) infinite;
+    }
+
+    .boot {
+      color: #8B96A5;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      min-height: 18px;
+    }
+
+    .boot b {
+      color: #3DDC84;
+      font-weight: 400;
+    }
+
+    .bar {
+      width: 180px;
+      height: 2px;
+      background: #1C2430;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #3DDC84, #38BDF8);
+      animation: slide 1.2s ease-in-out infinite;
+    }
+
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(260%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mark .frame, .mark .glyph { animation: none; stroke-dashoffset: 0; }
+      .mark .cursor { animation: none; opacity: 1; }
+      .bar i { animation: none; width: 100%; }
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+<div id="splash" aria-label="Loading">
+  <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+    <rect class="frame" x="1" y="1" width="62" height="62" rx="15" fill="#0C1016"
+          stroke="#3DDC84" stroke-opacity=".55" stroke-width="1.5"/>
+    <path class="glyph" d="M15 18V46H26.5a7 7 0 0 0 0-14H15M15 32H25.5a7 7 0 0 0 0-14H15"
+          fill="none" stroke="#3DDC84" stroke-width="4.5" stroke-linejoin="round"
+          stroke-linecap="round"/>
+    <path class="glyph" d="M37 46L44 18L51 46M40.2 36.5H47.8" fill="none" stroke="#3DDC84"
+          stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <rect class="cursor" x="13" y="51" width="11" height="3.5" rx="1.2" fill="#38BDF8"/>
+  </svg>
+  <div class="boot"><b>$</b> <span id="boot-line">booting portfolio</span></div>
+  <div class="bar"><i></i></div>
+</div>
+
+<script>
+  // Cycle a few boot lines while the engine downloads.
+  (function () {
+    var lines = ['booting portfolio', 'binding device services', 'loading gemma-2b',
+                 'mounting ui'];
+    var el = document.getElementById('boot-line');
+    var i = 0;
+    window.__bootTimer = setInterval(function () {
+      i = (i + 1) % lines.length;
+      el.textContent = lines[i];
+    }, 700);
+  })();
+
+  function hideSplash() {
+    var splash = document.getElementById('splash');
+    if (!splash || splash.classList.contains('hide')) return;
+    clearInterval(window.__bootTimer);
+    splash.classList.add('hide');
+    setTimeout(function () { splash.remove(); }, 500);
+  }
+
+  window.addEventListener('flutter-first-frame', hideSplash);
+  // Safety net in case the first-frame event never fires.
+  setTimeout(hideSplash, 15000);
+</script>
+<script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

@@ -1,104 +1,143 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio/data/portfolio_data.dart';
 import 'package:portfolio/res/app_colors.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:portfolio/res/app_text.dart';
+import 'package:portfolio/res/responsive.dart';
+import 'package:portfolio/widgets/common.dart';
 
 class ContactSection extends StatelessWidget {
-  const ContactSection({super.key});
+  final VoidCallback onResume;
+  const ContactSection({super.key, required this.onResume});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          '< CONTACT />',
-          style: GoogleFonts.orbitron(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
+    final mobile = Responsive.isMobile(context);
+
+    return ContentFrame(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionHeader(
+            index: '05',
+            kicker: 'ping',
+            title: 'Let\'s build something\nthat ships.',
           ),
-        ).animate()
-            .fadeIn(duration: 800.ms)
-            .slideX(begin: -0.3, end: 0),
-        const SizedBox(height: 48),
-        Container(
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: AppColors.cardDark,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.primary.withOpacity(0.2)),
-          ),
-          child: Column(
-            children: [
-              Text(
-                'Let\'s Build Something Amazing Together',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+          const SizedBox(height: 36),
+          Reveal(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(mobile ? 20 : 36),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.primary.withValues(alpha: 0.08),
+                    AppColors.surface,
+                    AppColors.cyan.withValues(alpha: 0.05),
+                  ],
                 ),
               ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildContactButton(
-                    icon: Icons.email,
-                    label: 'Email',
-                    onTap: () => launchUrl(Uri.parse('mailto:audichyabhavesh33@gmail.com')),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '\$ ',
+                          style: AppText.mono(
+                            size: mobile ? 13 : 15,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'mail -s "hello" ',
+                          style: AppText.mono(
+                            size: mobile ? 13 : 15,
+                            color: AppColors.text,
+                          ),
+                        ),
+                        TextSpan(
+                          text: Links.email,
+                          style: AppText.mono(
+                            size: mobile ? 13 : 15,
+                            color: AppColors.cyan,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  _buildContactButton(
-                    icon: Icons.link,
-                    label: 'LinkedIn',
-                    onTap: () => launchUrl(Uri.parse('https://linkedin.com/in/audibhavesh')),
+                  const SizedBox(height: 14),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 620),
+                    child: Text(
+                      'Open to conversations about Android platform work, banking hardware, on-device AI and leading mobile teams.',
+                      style: AppText.body(size: mobile ? 15 : 17),
+                    ),
                   ),
-                  _buildContactButton(
-                    icon: Icons.code,
-                    label: 'GitHub',
-                    onTap: () => launchUrl(Uri.parse('https://github.com/audibhavesh')),
-                  ),
-                  _buildContactButton(
-                    icon: Icons.question_answer,
-                    label: 'Stack Overflow',
-                    onTap: () => launchUrl(Uri.parse('https://stackoverflow.com/users/8818996/bhavesh-audichya')),
+                  const SizedBox(height: 28),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: [
+                      ConsoleButton(
+                        label: 'email_me',
+                        icon: Icons.alternate_email_rounded,
+                        filled: true,
+                        onTap: () => openUrl('mailto:${Links.email}'),
+                      ),
+                      ConsoleButton(
+                        label: 'resume.pdf',
+                        icon: Icons.download_rounded,
+                        onTap: onResume,
+                      ),
+                      ConsoleButton(
+                        label: 'linkedin',
+                        icon: Icons.work_outline_rounded,
+                        onTap: () => openUrl(Links.linkedIn),
+                      ),
+                      ConsoleButton(
+                        label: 'github',
+                        icon: Icons.code_rounded,
+                        onTap: () => openUrl(Links.github),
+                      ),
+                      ConsoleButton(
+                        label: 'stackoverflow',
+                        icon: Icons.layers_outlined,
+                        onTap: () => openUrl(Links.stackOverflow),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-        ).animate()
-            .fadeIn(duration: 800.ms)
-            .slideY(begin: 0.3, end: 0),
-      ],
-    );
-  }
-
-  Widget _buildContactButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
             ),
-            child: Column(
+          ),
+          const SizedBox(height: 56),
+          Container(height: 1, color: AppColors.border),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              runSpacing: 8,
+              spacing: 24,
               children: [
-                Icon(icon, color: AppColors.primary, size: 24),
-                const SizedBox(height: 8),
-                Text(label),
+                Text(
+                  '© ${DateTime.now().year} bhavesh auodichya',
+                  style: AppText.mono(size: 12, color: AppColors.textDim),
+                ),
+                Text(
+                  'built with flutter · compiled to web',
+                  style: AppText.mono(size: 12, color: AppColors.textDim),
+                ),
               ],
             ),
           ),
-        ),
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }

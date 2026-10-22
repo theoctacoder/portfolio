@@ -1,32 +1,22 @@
 {
-    "name": "portfolio",
-    "short_name": "portfolio",
+    "name": "Bhavesh Auodichya",
+    "short_name": "Bhavesh A",
     "start_url": ".",
-    "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A personal portfolio",
+    "description": "Mobile Frontend Lead \u2014 Android, banking hardware and on-device AI.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "theme_color": "#06080C",
+    "background_color": "#06080C",
+    "display": "standalone",
     "icons": [
         {
-            "src": "icons/Icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-maskable-192.png",
+            "src": "/web-app-manifest-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "icons/Icon-maskable-512.png",
+            "src": "/web-app-manifest-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
