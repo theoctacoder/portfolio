@@ -66,9 +66,10 @@
     }
 
     .mark .glyph {
-      stroke-dasharray: 120;
-      stroke-dashoffset: 120;
-      animation: draw 0.8s 0.35s ease-out forwards;
+      fill-opacity: 0;
+      stroke-dasharray: 320;
+      stroke-dashoffset: 320;
+      animation: draw 0.9s 0.25s ease-out forwards, fill 0.4s 0.85s ease-out forwards;
     }
 
     .mark .cursor {
@@ -105,6 +106,7 @@
     }
 
     @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes fill { to { fill-opacity: 1; } }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     @keyframes slide {
       0% { transform: translateX(-100%); }
@@ -112,7 +114,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .mark .frame, .mark .glyph { animation: none; stroke-dashoffset: 0; }
+      .mark .frame, .mark .glyph { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
       .mark .cursor { animation: none; opacity: 1; }
       .bar i { animation: none; width: 100%; }
     }
@@ -123,12 +125,8 @@
   <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
     <rect class="frame" x="1" y="1" width="62" height="62" rx="15" fill="#0C1016"
           stroke="#3DDC84" stroke-opacity=".55" stroke-width="1.5"/>
-    <path class="glyph" d="M15 18V46H26.5a7 7 0 0 0 0-14H15M15 32H25.5a7 7 0 0 0 0-14H15"
-          fill="none" stroke="#3DDC84" stroke-width="4.5" stroke-linejoin="round"
-          stroke-linecap="round"/>
-    <path class="glyph" d="M37 46L44 18L51 46M40.2 36.5H47.8" fill="none" stroke="#3DDC84"
-          stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
-    <rect class="cursor" x="13" y="51" width="11" height="3.5" rx="1.2" fill="#38BDF8"/>
+    <path class="glyph" d="M13.77 42L13.77 18L21.5 18Q23.9 18 25.69 18.77Q27.48 19.55 28.48 20.93Q29.48 22.31 29.48 24.18Q29.48 26.22 28.37 27.58Q27.25 28.95 25.47 29.21L25.47 29.28Q26.82 29.41 27.86 30.21Q28.89 31.02 29.47 32.27Q30.04 33.52 30.04 35.06Q30.04 37.13 29.01 38.7Q27.97 40.26 26.12 41.13Q24.26 42 21.79 42ZM18.54 27.67L21.43 27.67Q22.88 27.67 23.7 26.89Q24.52 26.12 24.52 24.81Q24.52 23.46 23.7 22.72Q22.88 21.98 21.43 21.98L18.54 21.98ZM18.54 38.02L21.63 38.02Q23.24 38.02 24.16 37.17Q25.08 36.31 25.08 34.8Q25.08 33.29 24.16 32.42Q23.24 31.55 21.63 31.55L18.54 31.55ZM32.15 42L38.03 18L44.28 18L50.23 42L45.2 42L44.05 36.58L38.33 36.58L37.18 42ZM39.15 32.63L43.19 32.63L42.04 26.84Q41.81 25.59 41.57 24.36Q41.32 23.13 41.19 22.44Q41.06 23.13 40.84 24.35Q40.63 25.56 40.37 26.81Z" fill="#3DDC84" stroke="#3DDC84" stroke-width="0.6"/>
+    <rect class="cursor" x="13.77" y="47" width="10" height="3.2" rx="1" fill="#38BDF8"/>
   </svg>
   <div class="boot"><b>$</b> <span id="boot-line">booting portfolio</span></div>
   <div class="bar"><i></i></div>

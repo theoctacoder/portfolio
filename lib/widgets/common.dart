@@ -357,44 +357,63 @@ class _LogoPainter extends CustomPainter {
         ..color = AppColors.primary.withValues(alpha: 0.55),
     );
 
-    final stroke = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.5
-      ..strokeJoin = StrokeJoin.round
-      ..strokeCap = StrokeCap.round
-      ..color = AppColors.primary;
-
-    final b = Path()
-      ..moveTo(15, 18)
-      ..lineTo(15, 46)
-      ..lineTo(26.5, 46)
-      ..arcToPoint(
-        const Offset(26.5, 32),
-        radius: const Radius.circular(7),
-        clockwise: false,
-      )
-      ..lineTo(15, 32)
-      ..moveTo(15, 32)
-      ..lineTo(25.5, 32)
-      ..arcToPoint(
-        const Offset(25.5, 18),
-        radius: const Radius.circular(7),
-        clockwise: false,
-      )
-      ..lineTo(15, 18);
-    final a = Path()
-      ..moveTo(37, 46)
-      ..lineTo(44, 18)
-      ..lineTo(51, 46)
-      ..moveTo(40.2, 36.5)
-      ..lineTo(47.8, 36.5);
-    canvas.drawPath(b, stroke);
-    canvas.drawPath(a, stroke);
+    // "BA" outlined from JetBrains Mono ExtraBold (same as web/favicon.svg).
+    final glyph = Path()
+      ..moveTo(13.77, 42)
+      ..lineTo(13.77, 18)
+      ..lineTo(21.5, 18)
+      ..quadraticBezierTo(23.9, 18, 25.69, 18.77)
+      ..quadraticBezierTo(27.48, 19.55, 28.48, 20.93)
+      ..quadraticBezierTo(29.48, 22.31, 29.48, 24.18)
+      ..quadraticBezierTo(29.48, 26.22, 28.37, 27.58)
+      ..quadraticBezierTo(27.25, 28.95, 25.47, 29.21)
+      ..lineTo(25.47, 29.28)
+      ..quadraticBezierTo(26.82, 29.41, 27.86, 30.21)
+      ..quadraticBezierTo(28.89, 31.02, 29.47, 32.27)
+      ..quadraticBezierTo(30.04, 33.52, 30.04, 35.06)
+      ..quadraticBezierTo(30.04, 37.13, 29.01, 38.7)
+      ..quadraticBezierTo(27.97, 40.26, 26.12, 41.13)
+      ..quadraticBezierTo(24.26, 42, 21.79, 42)
+      ..close()
+      ..moveTo(18.54, 27.67)
+      ..lineTo(21.43, 27.67)
+      ..quadraticBezierTo(22.88, 27.67, 23.7, 26.89)
+      ..quadraticBezierTo(24.52, 26.12, 24.52, 24.81)
+      ..quadraticBezierTo(24.52, 23.46, 23.7, 22.72)
+      ..quadraticBezierTo(22.88, 21.98, 21.43, 21.98)
+      ..lineTo(18.54, 21.98)
+      ..close()
+      ..moveTo(18.54, 38.02)
+      ..lineTo(21.63, 38.02)
+      ..quadraticBezierTo(23.24, 38.02, 24.16, 37.17)
+      ..quadraticBezierTo(25.08, 36.31, 25.08, 34.8)
+      ..quadraticBezierTo(25.08, 33.29, 24.16, 32.42)
+      ..quadraticBezierTo(23.24, 31.55, 21.63, 31.55)
+      ..lineTo(18.54, 31.55)
+      ..close()
+      ..moveTo(32.15, 42)
+      ..lineTo(38.03, 18)
+      ..lineTo(44.28, 18)
+      ..lineTo(50.23, 42)
+      ..lineTo(45.2, 42)
+      ..lineTo(44.05, 36.58)
+      ..lineTo(38.33, 36.58)
+      ..lineTo(37.18, 42)
+      ..close()
+      ..moveTo(39.15, 32.63)
+      ..lineTo(43.19, 32.63)
+      ..lineTo(42.04, 26.84)
+      ..quadraticBezierTo(41.81, 25.59, 41.57, 24.36)
+      ..quadraticBezierTo(41.32, 23.13, 41.19, 22.44)
+      ..quadraticBezierTo(41.06, 23.13, 40.84, 24.35)
+      ..quadraticBezierTo(40.63, 25.56, 40.37, 26.81)
+      ..close();
+    canvas.drawPath(glyph, Paint()..color = AppColors.primary);
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        const Rect.fromLTWH(13, 51, 11, 3.5),
-        const Radius.circular(1.2),
+        const Rect.fromLTWH(13.77, 47, 10, 3.2),
+        const Radius.circular(1),
       ),
       Paint()..color = AppColors.cyan,
     );
